@@ -28,24 +28,32 @@ function stopTimer () {
 }
 
 function resetTimer() {
-  temporaryTime = 0
   const timeElement = document.querySelector('#time')
-  timeElement.innerText = '時間: ' + temporaryTime + '秒'
+  timeElement.innerText = '00:00:00.00'
+  document.getElementById("laptime").innerHTML = message;
+  temporaryTime = 0
   lapCounter = 0
   message = ""
-  document.getElementById("laptime").innerHTML = message;
 }
 
 function lapTimer() {
   lapCounter++
-  message += 'ラップ' + lapCounter + '&emsp;' + currentTime / 1000 + '秒<br>'
+  message += 'ラップ' + lapCounter + '&emsp;' + convertToTime(currentTime) + '<br>'
   document.getElementById("laptime").innerHTML = message;
 }
 
 function rewritingTime () {
   currentTime = Date.now() + temporaryTime - startTime
   const timeElement = document.querySelector('#time')
-  timeElement.innerText = '時間: ' + currentTime / 1000 + '秒'
+  timeElement.innerText = convertToTime(currentTime)
+}
+
+function convertToTime(time) {
+  const h = String(Math.floor(time / (60 * 60 * 1000))).padStart(2, '0')
+  const m = String(Math.floor(time / (60 * 1000)) % 60).padStart(2, '0')
+  const s = String(Math.floor(time / 1000) % 60).padStart(2, '0')
+  const ms = String(Math.floor((time % 1000) / 10)).padStart(2, '0')
+  return h + ':' + m + ':' + s + '.' + ms
 }
 
 const timerStart = () => {
