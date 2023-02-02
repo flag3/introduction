@@ -1,57 +1,66 @@
 let startTime = 0
-let endTime = 0
-let time = 0
-let time2 = 0
-let stat = "stop"
+let currentTime = 0
+let temporaryTime = 0
+let timeStatus = "stop"
 let intervalID = null
+let lapCounter = 0
+let message = ""
 
 function startTimer () {
-  startTime = Date.now()
   intervalID = setInterval(rewritingTime, 1)
   const startElement = document.querySelector('#start')
   startElement.innerText = 'ストップ'
   const resetElement = document.querySelector('#reset')
   resetElement.innerText = 'ラップ'
-  stat = "start"
+  startTime = Date.now()
+  timeStatus = "start"
 }
 
 function stopTimer () {
-  const startElement = document.querySelector('#start')
-  startElement.innerText = 'スタート'
   clearInterval(intervalID)
   intervalID = null
-  time2 = time
-  stat = "stop"
+  const startElement = document.querySelector('#start')
+  startElement.innerText = 'スタート'
   const resetElement = document.querySelector('#reset')
   resetElement.innerText = 'リセット'
-}
-
-function rewritingTime () {
-  endTime = Date.now()
-  time = time2 + endTime - startTime
-  const timeElement = document.querySelector('#time')
-  timeElement.innerText = '時間: ' + time / 1000 + '秒'
+  temporaryTime = currentTime
+  timeStatus = "stop"
 }
 
 function resetTimer() {
-  time2 = 0
+  temporaryTime = 0
   const timeElement = document.querySelector('#time')
-  timeElement.innerText = '時間: 0秒'
+  timeElement.innerText = '時間: ' + temporaryTime + '秒'
+  lapCounter = 0
+  message = ""
+  document.getElementById("laptime").innerHTML = message;
+}
+
+function lapTimer() {
+  lapCounter++
+  message += 'ラップ' + lapCounter + '&emsp;' + currentTime / 1000 + '秒<br>'
+  document.getElementById("laptime").innerHTML = message;
+}
+
+function rewritingTime () {
+  currentTime = Date.now() + temporaryTime - startTime
+  const timeElement = document.querySelector('#time')
+  timeElement.innerText = '時間: ' + currentTime / 1000 + '秒'
 }
 
 const timerStart = () => {
-  if (stat === "stop") {
+  if (timeStatus === "stop") {
     startTimer()
-  } else if (stat === "start") {
+  } else if (timeStatus === "start") {
     stopTimer()
   } 
 }
 
 const timerReset = () => {
-  if (stat === "stop") {
+  if (timeStatus === "stop") {
     resetTimer()
-  } else if (stat === "start") {
-    console.log("未実装")
+  } else if (timeStatus === "start") {
+    lapTimer()
   }
 }
 
