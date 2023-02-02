@@ -1,37 +1,57 @@
 let startTime = 0
 let endTime = 0
 let time = 0
+let time2 = 0
 let stat = "stop"
 let intervalID = null
 
 function startTimer () {
   startTime = Date.now()
-  const stringElement = document.querySelector('#start')
-  stringElement.innerText = 'ストップ'
+  intervalID = setInterval(rewritingTime, 1)
+  const startElement = document.querySelector('#start')
+  startElement.innerText = 'ストップ'
+  const resetElement = document.querySelector('#reset')
+  resetElement.innerText = 'ラップ'
+  stat = "start"
 }
 
 function stopTimer () {
-  const stringElement = document.querySelector('#start')
-  stringElement.innerText = 'スタート'
+  const startElement = document.querySelector('#start')
+  startElement.innerText = 'スタート'
+  clearInterval(intervalID)
+  intervalID = null
+  time2 = time
+  stat = "stop"
+  const resetElement = document.querySelector('#reset')
+  resetElement.innerText = 'リセット'
 }
 
 function rewritingTime () {
   endTime = Date.now()
-  time = (endTime - startTime) / 1000
+  time = time2 + endTime - startTime
   const timeElement = document.querySelector('#time')
-  timeElement.innerText = '時間: ' + time + '秒'
+  timeElement.innerText = '時間: ' + time / 1000 + '秒'
 }
 
-const timer = () => {
+function resetTimer() {
+  time2 = 0
+  const timeElement = document.querySelector('#time')
+  timeElement.innerText = '時間: 0秒'
+}
+
+const timerStart = () => {
   if (stat === "stop") {
-    intervalID = setInterval(rewritingTime, 1)
     startTimer()
-    stat = "start"
   } else if (stat === "start") {
-    clearInterval(intervalID)
-    intervalID = null
     stopTimer()
-    stat = "stop"
   } 
+}
+
+const timerReset = () => {
+  if (stat === "stop") {
+    resetTimer()
+  } else if (stat === "start") {
+    console.log("未実装")
+  }
 }
 
