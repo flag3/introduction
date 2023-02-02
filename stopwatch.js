@@ -28,12 +28,12 @@ function stopTimer () {
 }
 
 function resetTimer() {
-  const timeElement = document.querySelector('#time')
-  timeElement.innerText = '00:00:00.00'
-  document.getElementById("laptime").innerHTML = message;
   temporaryTime = 0
+  const timeElement = document.querySelector('#time')
+  timeElement.innerText = convertToTime(currentTime)
+  message = ''
+  document.getElementById("laptime").innerHTML = message;
   lapCounter = 0
-  message = ""
 }
 
 function lapTimer() {
