@@ -30,7 +30,7 @@ function stopTimer () {
 function resetTimer() {
   temporaryTime = 0
   const timeElement = document.querySelector('#time')
-  timeElement.innerText = convertToTime(currentTime)
+  timeElement.innerText = convertToTime(temporaryTime)
   message = ''
   document.getElementById("laptime").innerHTML = message;
   lapCounter = 0
